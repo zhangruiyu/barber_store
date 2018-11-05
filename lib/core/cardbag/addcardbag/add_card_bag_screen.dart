@@ -1,6 +1,9 @@
 import 'package:barber_common/base/BasePageRoute.dart';
+import 'package:barber_common/utils/toast_utils.dart';
 import 'package:barber_common/widget/Toolbar.dart';
+import 'package:barber_store/core/cardbag/addcardbag/add_card_ag_pre_show_dialog.dart';
 import 'package:barber_store/core/cardbag/entitys/all_project_entity.dart';
+import 'package:barber_store/helpers/request_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -120,7 +123,7 @@ class _AddCardBagScreenState extends State<AddCardBagScreen> {
                 padding: const EdgeInsets.only(top: 40.0),
                 child: FlatButton(
                   color: theme.accentColor,
-                  onPressed: () {},
+                  onPressed: showAddCardBagPreShowDialog,
                   child: Text("提交"),
                 ),
               )
@@ -148,5 +151,27 @@ class _AddCardBagScreenState extends State<AddCardBagScreen> {
     setState(() {
       this.selectSubjectProject = subtypes;
     });
+  }
+
+  void showAddCardBagPreShowDialog() {
+    if (int.tryParse(countTextEditingController.text) == null) {
+      ToastUtils.toast("个数格式不正确");
+    }
+    if (int.tryParse(itemMoneyTextEditingController.text) == null) {
+      ToastUtils.toast("单价金额格式不正确");
+    }
+    RequestHelper.addCardBagPreDialog(
+            countTextEditingController.text,
+            selectProject.storeId,
+            selectSubjectProject.id,
+            itemMoneyTextEditingController.text)
+        .then((onValue) {
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return AddCardBagPreShowDialog(onValue);
+          });
+    });
+
   }
 }
