@@ -3,6 +3,7 @@ import 'package:barber_common/utils/toast_utils.dart';
 import 'package:barber_common/widget/Toolbar.dart';
 import 'package:barber_store/core/cardbag/addcardbag/add_card_ag_pre_show_dialog.dart';
 import 'package:barber_store/core/cardbag/entitys/all_project_entity.dart';
+import 'package:barber_store/core/paypassword/affirm_pay_password_screen.dart';
 import 'package:barber_store/helpers/request_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -169,9 +170,29 @@ class _AddCardBagScreenState extends State<AddCardBagScreen> {
       showModalBottomSheet(
           context: context,
           builder: (BuildContext context) {
-            return AddCardBagPreShowDialog(onValue);
+            return AddCardBagPreShowDialog(onValue,showAffirmPayPasswordScreen);
           });
     });
+  }
 
+  void addCardBag(String paypassword) {
+    RequestHelper.addCardBag(
+            countTextEditingController.text,
+            selectProject.storeId,
+            selectSubjectProject.id,
+            itemMoneyTextEditingController.text,paypassword)
+        .then((onValue) {
+      Navigator.popUntil(context, (Route<dynamic> route) {
+        return route.settings.name == "CardBagManagerScreen";
+      });
+    });
+  }
+
+  void showAffirmPayPasswordScreen() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return AffirmPayPasswordScreen(addCardBag);
+        });
   }
 }

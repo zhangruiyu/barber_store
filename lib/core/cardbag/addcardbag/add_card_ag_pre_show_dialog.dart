@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 
 class AddCardBagPreShowDialog extends StatefulWidget {
   final AddCardBagPreShowDialogEntity data;
+  final void Function() addCardBag;
 
-  AddCardBagPreShowDialog(this.data);
+  AddCardBagPreShowDialog(this.data, this.addCardBag);
 
   @override
   _AddCardBagPreShowDialogState createState() =>
@@ -54,11 +55,9 @@ class _AddCardBagPreShowDialogState extends State<AddCardBagPreShowDialog> {
               height: WindowUtils.getScreenHeight() * 0.3,
               child: ListView.builder(
                 itemBuilder: (context, index) {
-                  var projectNames =
-                  widget.data.infoList[index];
+                  var projectNames = widget.data.infoList[index];
                   return ListTile(
                     title: Text(projectNames.title),
-                    subtitle: Text(projectNames.subtitle),
                     trailing: Text(projectNames.trailing),
                   );
                 },
@@ -71,9 +70,7 @@ class _AddCardBagPreShowDialogState extends State<AddCardBagPreShowDialog> {
               width: WindowUtils.getScreenWidth(),
               child: FlatButton(
                   color: theme.accentColor,
-                  onPressed: () {
-//                    showAffirmPayPasswordScreen();
-                  },
+                  onPressed: widget.addCardBag,
                   textColor: Colors.white,
                   child: Text(widget.data.affirmText)),
             ))
@@ -82,4 +79,5 @@ class _AddCardBagPreShowDialogState extends State<AddCardBagPreShowDialog> {
       ),
     );
   }
+
 }

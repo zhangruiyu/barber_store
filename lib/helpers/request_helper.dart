@@ -36,4 +36,17 @@ class RequestHelper {
       'discount_item_price': discountItemPrice
     });
   }
+
+  static Future<Object> addCardBag(String count, int storeId,
+      String storeSubtypeId, String discountItemPrice, String paypassword) {
+    return RequestClient.request<Object>((json) {
+      return Object();
+    }, '/store/storeManager/addCardBag', {
+      'count': count,
+      'store_id': storeId,
+      'store_subtype_id': storeSubtypeId,
+      'discount_item_price': discountItemPrice,
+      'paypassword': paypassword
+    });
+  }
 }
