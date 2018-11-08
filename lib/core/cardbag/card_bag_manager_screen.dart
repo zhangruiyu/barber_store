@@ -17,6 +17,8 @@ class CardBagManagerScreen extends BasePageRoute {
 }
 
 class _CardBagManagerScreenState extends State<CardBagManagerScreen> {
+  var titles = ['销售中', '准备中'];
+
   @override
   Widget build(BuildContext context) {
     var edgeInsets = new EdgeInsets.only(top: 10.0);
@@ -27,12 +29,22 @@ class _CardBagManagerScreenState extends State<CardBagManagerScreen> {
           appBar: new Toolbar(
             title: new Text('卡包管理'),
             actions: <Widget>[
-              IconButton(icon: Icon(Icons.add), onPressed: () {
-                RequestHelper.addCardBagPre().then((onValue){
-                  Navigator.push(context, AddCardBagScreen(onValue).route());
-                });
-              })
+              IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    RequestHelper.addCardBagPre().then((onValue) {
+                      Navigator.push(
+                          context, AddCardBagScreen(onValue).route());
+                    });
+                  })
             ],
+            bottom: TabBar(
+              tabs: titles
+                  .map<Widget>(
+                    (String page) => Tab(text: page),
+                  )
+                  .toList(),
+            ),
           ),
           body: new Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

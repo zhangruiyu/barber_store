@@ -207,6 +207,7 @@ class _AddCardBagScreenState extends State<AddCardBagScreen> {
         });
   }
 
+  ///前置条件判断
   bool checkConditions() {
     if (selectProject == null || selectSubjectProject == null) {
       ToastUtils.toast("请选择项目后再试");
