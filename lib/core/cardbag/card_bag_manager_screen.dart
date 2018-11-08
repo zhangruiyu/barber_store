@@ -25,30 +25,30 @@ class _CardBagManagerScreenState extends State<CardBagManagerScreen> {
     const textStyle = const TextStyle();
     return new StoreBuilder<AppState>(builder: (context, store) {
       var currentUser = store.state.currentUser;
-      return new Scaffold(
-          appBar: new Toolbar(
-            title: new Text('卡包管理'),
-            actions: <Widget>[
-              IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    RequestHelper.addCardBagPre().then((onValue) {
-                      Navigator.push(
-                          context, AddCardBagScreen(onValue).route());
-                    });
-                  })
-            ],
-            bottom: TabBar(
-              tabs: titles
-                  .map<Widget>(
-                    (String page) => Tab(text: page),
-                  )
-                  .toList(),
-            ),
-          ),
-          body: new Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[]));
+      return DefaultTabController(
+          length: titles.length,
+          child: new Scaffold(
+              appBar: new Toolbar(
+                title: new Text('卡包管理'),
+                actions: <Widget>[
+                  IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () {
+                        RequestHelper.addCardBagPre().then((onValue) {
+                          Navigator.push(
+                              context, AddCardBagScreen(onValue).route());
+                        });
+                      })
+                ],
+                bottom: TabBar(
+                  tabs: titles
+                      .map<Widget>(
+                        (String page) => Tab(text: page),
+                      )
+                      .toList(),
+                ),
+              ),
+              body: new TabBarView(children: <Widget>[Text("1"), Text("2")])));
     });
   }
 }
