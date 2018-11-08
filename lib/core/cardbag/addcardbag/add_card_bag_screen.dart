@@ -1,4 +1,5 @@
 import 'package:barber_common/base/BasePageRoute.dart';
+import 'package:barber_common/helpers/navigator_helper.dart';
 import 'package:barber_common/utils/toast_utils.dart';
 import 'package:barber_common/widget/Toolbar.dart';
 import 'package:barber_store/core/cardbag/addcardbag/add_card_ag_pre_show_dialog.dart';
@@ -155,37 +156,47 @@ class _AddCardBagScreenState extends State<AddCardBagScreen> {
   }
 
   void showAddCardBagPreShowDialog() {
-    if (int.tryParse(countTextEditingController.text) == null) {
-      ToastUtils.toast("个数格式不正确");
+    if (checkConditions()) {
+      NavigatorHelper.showLoadingDialog(true);
+      RequestHelper.addCardBagPreDialog(
+              countTextEditingController.text,
+              selectProject.storeId,
+              selectSubjectProject.id,
+              itemMoneyTextEditingController.text)
+          .then((onValue) {
+        NavigatorHelper.showLoadingDialog(false, () {
+          showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return AddCardBagPreShowDialog(
+                    onValue, showAffirmPayPasswordScreen);
+              });
+        });
+      }).catchError((e) {
+        NavigatorHelper.showLoadingDialog(false);
+      });
     }
-    if (int.tryParse(itemMoneyTextEditingController.text) == null) {
-      ToastUtils.toast("单价金额格式不正确");
-    }
-    RequestHelper.addCardBagPreDialog(
-            countTextEditingController.text,
-            selectProject.storeId,
-            selectSubjectProject.id,
-            itemMoneyTextEditingController.text)
-        .then((onValue) {
-      showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return AddCardBagPreShowDialog(onValue,showAffirmPayPasswordScreen);
-          });
-    });
   }
 
   void addCardBag(String paypassword) {
-    RequestHelper.addCardBag(
-            countTextEditingController.text,
-            selectProject.storeId,
-            selectSubjectProject.id,
-            itemMoneyTextEditingController.text,paypassword)
-        .then((onValue) {
-      Navigator.popUntil(context, (Route<dynamic> route) {
-        return route.settings.name == "CardBagManagerScreen";
+    if (checkConditions()) {
+      NavigatorHelper.showLoadingDialog(true);
+      RequestHelper.addCardBag(
+              countTextEditingController.text,
+              selectProject.storeId,
+              selectSubjectProject.id,
+              itemMoneyTextEditingController.text,
+              paypassword)
+          .then((onValue) {
+        NavigatorHelper.showLoadingDialog(false, () {
+          Navigator.popUntil(context, (Route<dynamic> route) {
+            return route.settings.name == "CardBagManagerScreen";
+          });
+        });
+      }).catchError((e) {
+        NavigatorHelper.showLoadingDialog(false);
       });
-    });
+    }
   }
 
   void showAffirmPayPasswordScreen() {
@@ -194,5 +205,22 @@ class _AddCardBagScreenState extends State<AddCardBagScreen> {
         builder: (context) {
           return AffirmPayPasswordScreen(addCardBag);
         });
+  }
+
+  bool checkConditions() {
+    if (selectProject == null || selectSubjectProject == null) {
+      ToastUtils.toast("请选择项目后再试");
+      return false;
+    }
+    if (int.tryParse(countTextEditingController.text) ?? 0 <= 0) {
+      ToastUtils.toast("可使用次数不正确");
+      return false;
+    }
+
+    if (int.tryParse(itemMoneyTextEditingController.text) ?? 0 <= 0) {
+      ToastUtils.toast("单价金额不正确");
+      return false;
+    }
+    return true;
   }
 }
