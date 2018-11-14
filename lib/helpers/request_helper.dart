@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:barber_common/helpers/net_work.dart';
 import 'package:barber_store/core/cardbag/addcardbag/add_card_ag_pre_show_dialog_entity.dart';
 import 'package:barber_store/core/cardbag/entitys/all_project_entity.dart';
+import 'package:barber_store/core/cardbag/entitys/card_bag_entity.dart';
 import 'package:barber_store/core/main/account/entitys/account_entity.dart';
 import 'package:barber_store/core/main/home/entitys/home_entity.dart';
 
@@ -47,6 +48,25 @@ class RequestHelper {
       'store_subtype_id': storeSubtypeId,
       'discount_item_price': discountItemPrice,
       'paypassword': paypassword
+    });
+  }
+
+  static Future<List<CardBagEntity>> allCardBagByType(int type) {
+    return RequestClient.request<List<CardBagEntity>>(
+        (json) => (json as List).map((f) {
+              return CardBagEntity.fromJson(f);
+            }).toList(),
+        '/store/storeManager/allCardBagByType',
+        {
+          'type': type,
+        });
+  }
+
+  static Future<Object> setCardBagStateByState(int state, int cardBagId) {
+    return RequestClient.request<Object>(
+        (json) => Object(), '/store/storeManager/setCardBagStateByState', {
+      'state': state,
+      'cardBagId': cardBagId,
     });
   }
 }
