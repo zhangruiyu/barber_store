@@ -114,7 +114,7 @@ class _CardBagManagerPageState extends State<CardBagManagerPage> {
     NavigatorHelper.showLoadingDialog(true);
     RequestHelper.setCardBagStateByState(1, cardBagId).then((onValue) {
       NavigatorHelper.showLoadingDialog(false);
-      ToastUtils.toast("已添加为准备中");
+      ToastUtils.toast("已添加为销售中");
       refreshData();
     }).catchError((onError) {
       NavigatorHelper.showLoadingDialog(false);
