@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:banner/banner.dart';
 import 'package:barber_common/helpers/user_helper.dart';
+import 'package:barber_common/module/webview/webview_screen.dart';
 import 'package:barber_common/utils/WindowUtils.dart';
-import 'package:barber_common/utils/toast_utils.dart';
 import 'package:barber_common/widget/BannerShowWidget.dart';
 import 'package:barber_common/widget/Toolbar.dart';
 import 'package:barber_common/widget/divider.dart';
@@ -13,7 +13,6 @@ import 'package:barber_store/core/main/home_tab_screen.dart';
 import 'package:barber_store/core/main/i_refresh.dart';
 import 'package:barber_store/helpers/request_helper.dart';
 import 'package:flutter/material.dart';
-
 
 class HomePage extends StatefulWidget {
   @override
@@ -67,7 +66,7 @@ class _HomePageState extends State<HomePage> with RefreshPage {
                     return new BannerShowWidget(picUrl: data.picUrl);
                   },
                   onBannerClickListener: (int index, data) {
-                    ToastUtils.toast(data.title);
+                    Navigator.push(context, WebViewScreen().route());
                   },
                 ),
                 CSDivider(
