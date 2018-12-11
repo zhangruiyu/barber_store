@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AddCardBagScreen extends BasePageRoute {
-  final List<ProjectEntity> onValue;
+  final List<StoreAllProject> onValue;
 
   AddCardBagScreen(this.onValue);
 
@@ -24,7 +24,7 @@ class AddCardBagScreen extends BasePageRoute {
 }
 
 class _AddCardBagScreenState extends State<AddCardBagScreen> {
-  ProjectEntity selectProject;
+  StoreAllProject selectProject;
   Subtypes selectSubjectProject;
   int count = 0;
   TextEditingController countTextEditingController =
@@ -58,11 +58,11 @@ class _AddCardBagScreenState extends State<AddCardBagScreen> {
                   contentPadding: EdgeInsets.zero,
                 ),
                 isEmpty: selectProject == null,
-                child: DropdownButton<ProjectEntity>(
+                child: DropdownButton<StoreAllProject>(
                   value: selectProject,
                   onChanged: selectFirstOption,
-                  items: widget.onValue.map((ProjectEntity value) {
-                    return DropdownMenuItem<ProjectEntity>(
+                  items: widget.onValue.map((StoreAllProject value) {
+                    return DropdownMenuItem<StoreAllProject>(
                       value: value,
                       child: Text(value.name),
                     );
@@ -142,7 +142,7 @@ class _AddCardBagScreenState extends State<AddCardBagScreen> {
         (int.tryParse(countTextEditingController.text) ?? 0);
   }
 
-  void selectFirstOption(ProjectEntity selectProject) {
+  void selectFirstOption(StoreAllProject selectProject) {
     setState(() {
       this.selectProject = selectProject;
       this.selectSubjectProject = null;
@@ -213,12 +213,12 @@ class _AddCardBagScreenState extends State<AddCardBagScreen> {
       ToastUtils.toast("请选择项目后再试");
       return false;
     }
-    if (int.tryParse(countTextEditingController.text) ?? 0 <= 0) {
+    if ((int.tryParse(countTextEditingController.text) ?? 0) < 0) {
       ToastUtils.toast("可使用次数不正确");
       return false;
     }
 
-    if (int.tryParse(itemMoneyTextEditingController.text) ?? 0 <= 0) {
+    if ((int.tryParse(itemMoneyTextEditingController.text) ?? 0) < 0) {
       ToastUtils.toast("单价金额不正确");
       return false;
     }

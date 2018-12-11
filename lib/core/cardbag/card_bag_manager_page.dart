@@ -1,9 +1,10 @@
+import 'dart:async';
+
 import 'package:barber_common/helpers/navigator_helper.dart';
 import 'package:barber_common/utils/toast_utils.dart';
 import 'package:barber_store/core/cardbag/entitys/card_bag_entity.dart';
 import 'package:barber_store/helpers/request_helper.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 
 class CardBagManagerPage extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class CardBagManagerPage extends StatefulWidget {
 }
 
 class _CardBagManagerPageState extends State<CardBagManagerPage> {
-  List<CardBagEntity> data = [];
+  List<ItemCardBag> data = [];
 
   @override
   void initState() {
@@ -101,7 +102,7 @@ class _CardBagManagerPageState extends State<CardBagManagerPage> {
     RequestHelper.allCardBagByType(0).then((onValue) {
       setState(() {
         data.clear();
-        data.addAll(onValue);
+        data.addAll(onValue.allCardBag);
       });
       completer.complete(null);
     }).catchError((onError) {

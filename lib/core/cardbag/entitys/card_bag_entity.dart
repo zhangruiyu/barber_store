@@ -1,4 +1,27 @@
 class CardBagEntity {
+  List<ItemCardBag> allCardBag;
+
+  CardBagEntity({this.allCardBag});
+
+  CardBagEntity.fromJson(Map<String, dynamic> json) {
+    if (json['all_card_bag'] != null) {
+      allCardBag = new List<ItemCardBag>();
+      json['all_card_bag'].forEach((v) {
+        allCardBag.add(new ItemCardBag.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.allCardBag != null) {
+      data['all_card_bag'] = this.allCardBag.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class ItemCardBag {
   int id;
   String name;
   int storeId;
@@ -10,7 +33,7 @@ class CardBagEntity {
   int payCount;
   int state;
 
-  CardBagEntity(
+  ItemCardBag(
       {this.id,
       this.name,
       this.storeId,
@@ -22,7 +45,7 @@ class CardBagEntity {
       this.payCount,
       this.state});
 
-  CardBagEntity.fromJson(Map<String, dynamic> json) {
+  ItemCardBag.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     storeId = json['store_id'];
